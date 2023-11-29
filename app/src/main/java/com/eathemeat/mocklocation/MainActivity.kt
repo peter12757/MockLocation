@@ -1,22 +1,68 @@
 package com.eathemeat.mocklocation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.amap.api.maps.AMap
+import com.amap.api.maps.MapView
+import com.amap.api.maps.model.MyLocationStyle
 import com.eathemeat.mocklocation.ui.theme.MockLocationTheme
 
+
+const val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
+
+    lateinit var mMapView: MapView
+    lateinit var mapApi:AMap
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMapView.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mMapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mMapView.onPause()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mMapView.onSaveInstanceState(outState)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mMapView = MapView(this).apply {
+            onCreate(savedInstanceState)
+            mapApi = map
+        }
         setContent {
             MockLocationTheme {
                 // A surface container using the 'background' color from the theme
@@ -24,25 +70,71 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Greeting(mMapView)
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    ConstraintLayout{
+
+    fun onAddrTextChange(addr: String): Unit { 
 
     }
-
+    fun locationMySelf(){
+        val myLocationStyle = MyLocationStyle().apply {
+            interval(2000)
+        }
+        mapApi.setMyLocationStyle(myLocationStyle) //设置定位蓝点的Style
+        mapApi.setMyLocationEnabled(true) // 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+    }
 }
 
-@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Greeting(mapView: MapView, modifier: Modifier = Modifier) {
+    Log.d(TAG, "Greeting: ${modifier}")
+    var model = remeberView
+    Column {
+        TextField(
+            value = "asd",
+            onValueChange = {
+//                onAddrTextChange(it)
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.surface,
+                focusedIndicatorColor = MaterialTheme.colorScheme.surface
+            ),
+            placeholder = {
+                Text(text = stringResource(id = R.string.search))
+                          },
+            modifier = modifier
+                .fillMaxWidth()
+                .heightIn(min = 56.dp),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null
+                )
+            },
+        )
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = {
+                mapView
+            },
+            update = {
+                Log.d(TAG, "MapView:  update")
+            }
+        )
+
+    }
+}
+
+
+@Preview(showBackground = true )
 @Composable
 fun GreetingPreview() {
     MockLocationTheme {
-        Greeting("Android")
+        Greeting("Home")
     }
 }
