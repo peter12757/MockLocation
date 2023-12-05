@@ -1,13 +1,14 @@
 package com.eathemeat.mocklocation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 /**
  * author:PeterX
  * time:2023/11/28 0028
  */
 @Composable
-class HomeScreen(honmeviewmodel:HomeViewMoel = viewModel()) {
+fun HomeScreen(honmeviewmodel:HomeViewMoel = viewModel()) {
 
 }
 

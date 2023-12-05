@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +27,7 @@ import com.amap.api.maps.AMap
 import com.amap.api.maps.MapView
 import com.amap.api.maps.model.MyLocationStyle
 import com.eathemeat.mocklocation.ui.theme.MockLocationTheme
+import location.MockLocationMgr
 
 
 const val TAG = "MainActivity"
@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
 
     lateinit var mMapView: MapView
     lateinit var mapApi:AMap
+    var locationMgr: MockLocationMgr = MockLocationMgr()
 
     override fun onDestroy() {
         super.onDestroy()
@@ -59,10 +60,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mMapView = MapView(this).apply {
-            onCreate(savedInstanceState)
-            mapApi = map
-        }
         setContent {
             MockLocationTheme {
                 // A surface container using the 'background' color from the theme
@@ -70,10 +67,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(mMapView)
+                    Greeting()
                 }
             }
         }
+        mMapView = findViewById(R.id.Amapview)
     }
 
 
@@ -91,9 +89,8 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(mapView: MapView, modifier: Modifier = Modifier) {
+fun Greeting(modifier: Modifier = Modifier) {
     Log.d(TAG, "Greeting: ${modifier}")
-    var model = remeberView
     Column {
         TextField(
             value = "asd",
@@ -120,7 +117,9 @@ fun Greeting(mapView: MapView, modifier: Modifier = Modifier) {
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = {
-                mapView
+                MapView(it).apply {
+                    id = R.id.Amapview
+                }
             },
             update = {
                 Log.d(TAG, "MapView:  update")
@@ -128,6 +127,7 @@ fun Greeting(mapView: MapView, modifier: Modifier = Modifier) {
         )
 
     }
+    return
 }
 
 
@@ -135,6 +135,6 @@ fun Greeting(mapView: MapView, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     MockLocationTheme {
-        Greeting("Home")
+        Greeting()
     }
 }
