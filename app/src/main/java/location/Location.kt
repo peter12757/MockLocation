@@ -1,4 +1,4 @@
-package com.eathemeat.mocklocation
+package location
 
 /**
  * author:PeterX

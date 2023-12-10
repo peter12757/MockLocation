@@ -2,4 +2,22 @@
     <string name="app_name">MockLocation</string>
 
     <string name="search">搜素</string>
+    <string name="app_location_permission_demonstrate_access">Location permissions are needed to demonstrate access.</string>
+    <string name="app_location_permission_granted">Location Permissions have been granted. Contacts screen...</string>
+    <string name="app_location_permission_denied">Permissions were not granted.</string>
+
+    <string name="app_system_mock_location">系统模拟位置：</string>
+    <string name="app_system_mock_location_on">已开启</string>
+    <string name="app_system_mock_location_off">未开启</string> 
+    <string name="app_start_mock_location">开始模拟位置</string>
+    <string name="app_stop_mock_location">停止模拟位置</string>
+
+    <string name="app_location_provider">Provider：</string>
+    <string name="app_location_time">时间：</string>
+    <string name="app_location_latitude">纬度：</string>
+    <string name="app_location_longitude">经度：</string>
+    <string name="app_location_altitude">高程：</string>
+    <string name="app_location_bearing">方向：</string>
+    <string name="app_location_speed">速度：</string>
+    <string name="app_location_accuracy">精度：</string>
 </resources>

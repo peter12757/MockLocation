@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.amap.api.maps.AMap
 import com.amap.api.maps.MapView
 import com.amap.api.maps.model.MyLocationStyle
@@ -35,7 +36,6 @@ class MainActivity : ComponentActivity() {
 
     lateinit var mMapView: MapView
     lateinit var mapApi:AMap
-    var locationMgr: MockLocationMgr = MockLocationMgr()
 
     override fun onDestroy() {
         super.onDestroy()
@@ -72,12 +72,10 @@ class MainActivity : ComponentActivity() {
             }
         }
         mMapView = findViewById(R.id.Amapview)
+        mMapView.onCreate(savedInstanceState)
     }
 
 
-    fun onAddrTextChange(addr: String): Unit { 
-
-    }
     fun locationMySelf(){
         val myLocationStyle = MyLocationStyle().apply {
             interval(2000)
@@ -89,13 +87,13 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(modifier: Modifier = Modifier) {
+fun Greeting(honmeviewmodel:HomeViewMoel = viewModel(), modifier: Modifier = Modifier) {
     Log.d(TAG, "Greeting: ${modifier}")
     Column {
         TextField(
             value = "asd",
             onValueChange = {
-//                onAddrTextChange(it)
+                Log.d(TAG, "onValueChange() called")
             },
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.surface,

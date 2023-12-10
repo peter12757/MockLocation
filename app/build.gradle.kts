@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.eathemeat.mocklocation"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.eathemeat.mocklocation"
@@ -65,7 +65,8 @@ dependencies {
     implementation("com.amap.api:3dmap:latest.integration")
     implementation("com.amap.api:location:latest.integration")
     implementation("com.amap.api:search:latest.integration")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-rc01")
+    implementation("com.google.android.material:material:1.10.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
