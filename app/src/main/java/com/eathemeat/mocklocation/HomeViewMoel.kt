@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import location.Location
+import location.LocationInfo
 import location.MockLocationMgr
 
 /**
@@ -13,8 +13,8 @@ import location.MockLocationMgr
  */
 class HomeViewMoel : ViewModel() {
 
-    private val _addrState = MutableStateFlow(Location())
-    val addrState:StateFlow<Location> =_addrState.asStateFlow()
+    private val _addrState = MutableStateFlow(LocationInfo())
+    val addrState:StateFlow<LocationInfo> =_addrState.asStateFlow()
 
     var locationMgr: MockLocationMgr = MockLocationMgr()
 

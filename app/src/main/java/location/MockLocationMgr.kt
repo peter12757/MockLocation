@@ -2,14 +2,22 @@ package location
 
 import android.Manifest
 import android.app.Activity
-import android.app.Application
+import android.app.AppOpsManager
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
+import android.location.LocationProvider
+import android.location.provider.ProviderProperties
+import android.os.Build
+import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import com.eathemeat.mocklocation.R
 import com.google.android.material.snackbar.Snackbar
+import java.lang.reflect.Method
 
 
 /**
@@ -20,58 +28,15 @@ const val TAG = "MockLocationMgr"
 class MockLocationMgr {
 
     lateinit var sysLocationMgr:LocationManager
-    lateinit var mAppCtx:Application
+    lateinit var mAcitivity:Activity
+    lateinit var test1:MockLocationTest1
+    lateinit var test2: MockLocationTest1
 
-
-    constructor(appCtx:Application) {
-        sysLocationMgr = appCtx.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if (checkPermission(appCtx)) {
-            sysLocationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        } else {
-            requestLocationPermissions();
-        }
+    constructor(act:Activity){
+        mAcitivity = act
+        sysLocationMgr = mAcitivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        test1 = MockLocationTest1(mAcitivity,sysLocationMgr)
     }
 
-    fun checkPermission(ctx:Context): Boolean {
-        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
-            return false;
-        }
-        return true;
-    }
-
-
-    /**
-     * 请求位置权限
-     */
-    private fun requestLocationPermissions(activity:Activity) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                activity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            || ActivityCompat.shouldShowRequestPermissionRationale(
-                activity,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        ) {
-            Snackbar.make(
-                layoutLocation, R.string.app_location_permission_demonstrate_access,
-                Snackbar.LENGTH_INDEFINITE
-            )
-                .setAction(R.string.app_ok, View.OnClickListener {
-                    ActivityCompat.requestPermissions(
-                        activity,
-                        PERMISSIONS_LOCATION, REQUEST_LOCATION
-                    )
-                }).show()
-        } else {
-            ActivityCompat.requestPermissions(
-                activity,
-                PERMISSIONS_LOCATION, REQUEST_LOCATION
-            )
-        }
-    }
 
 }
