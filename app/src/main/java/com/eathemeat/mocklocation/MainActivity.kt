@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +30,6 @@ import com.amap.api.maps.AMap
 import com.amap.api.maps.MapView
 import com.amap.api.maps.model.MyLocationStyle
 import com.eathemeat.mocklocation.ui.theme.MockLocationTheme
-import location.MockLocationMgr
 
 
 const val TAG = "MainActivity"
@@ -36,6 +37,20 @@ class MainActivity : ComponentActivity() {
 
     lateinit var mMapView: MapView
     lateinit var mapApi:AMap
+
+    var launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { it->{
+        it.entries.forEach{entry->
+            Log.d(TAG, "权限:${entry.key} ->申请结果: ${entry.value}" )
+        }
+    }}
+
+    /**
+     * 位置许可
+     */
+    private val PERMISSIONS_LOCATION:Array<String> = arrayOf<String>(
+        android.Manifest.permission.ACCESS_FINE_LOCATION,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION
+    )
 
     override fun onDestroy() {
         super.onDestroy()
@@ -60,6 +75,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        launcher.launch(PERMISSIONS_LOCATION)
         setContent {
             MockLocationTheme {
                 // A surface container using the 'background' color from the theme

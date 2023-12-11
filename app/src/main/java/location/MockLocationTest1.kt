@@ -16,7 +16,7 @@ import java.lang.reflect.Method
  * author:PeterX
  * time:2023/12/11 0011
  */
-class MockLocationTest1 {
+class MockLocationTest1 :MockLocApi{
 
     var isOpenMock = true
     val MockProviderName = LocationManager.GPS_PROVIDER
@@ -125,5 +125,13 @@ class MockLocationTest1 {
             ,starCount
             , 0.0
         );
+    }
+
+    override fun enableMockLocation(info: LocationInfo) {
+        TODO("Not yet implemented")
+    }
+
+    override fun disableMockLocation(info: LocationInfo) {
+        TODO("Not yet implemented")
     }
 }
